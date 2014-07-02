@@ -1,0 +1,73 @@
+<html ondrop="o(event.dataTransfer.files);return false" ondragover="return false">
+<script>
+
+// FileReaders array
+F = [];
+
+// Images array
+var I = [];
+
+// Images count
+var n = 0;
+
+// ondrop function
+// @param a: FileList
+o = function (a){
+
+  // Loop on the images dropped
+  var i, f;
+  for (i = 0; i < a.length; i++){
+     
+    // Create a File Reader for each file
+    with(new FileReader){
+      readAsDataURL(a[i]);
+      onload = function(){
+
+        // Create an image containing the FileReader's result
+        I[n] = new Image;
+        I[n].src = result;
+        
+        // Update canvas width to include this image's width
+        c.width += I[n].width;
+        
+        // Update canvas height to include this image's height
+        c.height = Math.max(c.height, I[n].height);
+        
+        // Reset total width, CSS code, offset
+        var w = 0;
+        var h = "";
+        var t = 0;
+        
+        // Loop on the images
+        for (j in I){
+        
+          // Draw the image on the canvas
+          c.getContext("2d").drawImage(I[j], w, 0);
+           
+          // Update total width
+          w += I[j].width;
+          
+          // Update CSS
+          h += "\n.sprite" + j + "{width:" + I[j].width + "px;height:" + I[j].height + "px;background:url(sprite.png)" + (t ? " -" + t + "px 0}" : "}");
+          
+          // Update offset
+          t += I[j].width;
+          
+          // Update image count
+          n++;
+        }
+
+        // Update CSS code
+        p.innerHTML = h;
+
+        // Update img
+        u.src = c.toDataURL();
+      }
+    }
+  }
+}
+</script>
+DROP IMAGES
+<pre id=p></pre>
+<img id=u>
+<canvas id=c width=0 height=0 hidden>
