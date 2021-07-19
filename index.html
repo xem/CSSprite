@@ -1,5 +1,84 @@
-<html ondrop='f(event);return!1'ondragover=return!1><script>I=[n=0];f=function(a){d=a.dataTransfer.files;for(i=0;i<d.length;i++)with(new FileReader)readAsDataURL(d[i]),onload=function(){z=I[n]=new Image;z.src=result;c.width+=z.width;(y=z.height)>c.height&&(c.height=y);n++;w=0;h="";t=0;for(j in I)c.getContext("2d").drawImage(x=I[j],w,0),w+=v=x.width,h+="\n.sprite"+j+"{width:"+v+"px;height:"+x.height+"px;background:url(sprite.png)"+(t?" -"+t+"px 0}":"}"),t+=v;p.innerHTML=h;u.src=c.toDataURL()}}</script><tt id=p></tt><img id=u><canvas id=c width=0 height=0 hidden>
-<!-- score: 567b -->
+<html ondrop="o(event.dataTransfer.files);return false" ondragover="return false">
+<script>
 
-<!-- above code is just for the presentation -->
-</canvas><hr><h1><a href=//github.com/xem/CSSprite><img style="position:absolute;right:0;border:0;margin-top:-25px" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>CSSprite</h1><h3>A 567b CSS sprite generator, in HTML & JavaScript</a></h3><p>Use CSS sprites for your images and icons to save bandwidth and reduce HTTP requests.<ul><li>Drop images on this page (bmp, gif, jpg, png).<li>Save the output code in a CSS file.<li>Save the output image on your desktop (sprite.png).<li>You can compress it even more with <a href=//tinypng.com/ target=_blank>tinyPNG</a>.<li>Done !</ul><br><br><b><a href=cssprite.html>(download)</a></b><style>body{text-align:center;font-family:arial}ul{display:inline-block;text-align:left}#u{display:block;margin:30px auto}[hidden]{display:none}a{text-decoration:none}
+// FileReaders array
+F = [];
+
+// Images array
+var I = [];
+
+// Images count
+var n = 0;
+
+// ondrop function
+// @param a: FileList
+o = function (a){
+
+  // Reset CSS
+  p.innerHTML = "";
+
+  // Loop on the images dropped
+  var i, f;
+  for (i = 0; i < a.length; i++){
+     
+    // Create a File Reader for each file
+    with(new FileReader){
+      readAsDataURL(a[i]);
+      onload = function(){
+
+        // Create an image containing the FileReader's result
+        I[n] = new Image;
+        I[n].src = result;
+        
+        // Update canvas width to include this image's width
+        c.width += I[n].width;
+        
+        // Update canvas height to include this image's height
+        c.height = Math.max(c.height, I[n].height);
+        
+        // Reset total width, CSS code, offset
+        var w = 0;
+        var h = "";
+        var t = 0;
+        
+        // Loop on the images
+        for (j in I){
+        
+          // Draw the image on the canvas
+          c.getContext("2d").drawImage(I[j], w, 0);
+           
+          // Update total width
+          w += I[j].width;
+          
+          // Update CSS
+          h += "\n.sprite" + j + "{width:" + I[j].width + "px;height:" + I[j].height + "px;background:url(sprite.png)" + (t ? " -" + t + "px 0}" : "}");
+          
+          // Update offset
+          t += I[j].width;
+          
+          // Update image count
+          n++;
+        }
+
+        // Update CSS code
+        p.innerHTML = h;
+
+        // Update img
+        u.src = c.toDataURL();
+      }
+    }
+  }
+}
+</script>
+<br>
+<br>
+DROP IMAGES HERE
+<pre id=p></pre>
+<img id=u>
+<canvas id=c width=0 height=0 hidden>
+
+
+<!-- presentation -->
+</canvas><hr><h1><a href=//github.com/xem/CSSprite><img style="position:absolute;right:0;border:0;margin-top:-25px" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>CSSprite</h1><h3>A <a href="cssprite.html">567b</a> CSS sprite generator, in HTML & JavaScript</a></h3><p>Use CSS sprites for your images and icons to save bandwidth and reduce HTTP requests.<ul><li>Drop images on this page (bmp, gif, jpg, png).
+<li>If the image doesn't appear correctly, please <button onclick="location=location">refresh and retry</button>
+<li>Save the output code in a CSS file.<li>Save the output image on your desktop (sprite.png).<li>You can compress it even more with <a href=//tinypng.com/ target=_blank>tinyPNG</a>.<li>Done !</ul><br><br><b><a href=full.html>(download)</a></b><style>body{text-align:center;font-family:arial;line-height: 1.5;}ul{display:inline-block;text-align:left}#u{display:block;margin:30px auto}[hidden]{display:none}a{text-decoration:none}
